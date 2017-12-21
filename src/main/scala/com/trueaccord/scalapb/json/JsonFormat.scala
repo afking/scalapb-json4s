@@ -208,11 +208,12 @@ class Printer(
   }
 
   def serializeSingleValue(fd: FieldDescriptor, value: PValue, formattingLongAsNumber: Boolean): JValue = value match {
-    case PEnum(e) =>
+    case PEnum(e) => JInt(e.number)
+      /* TODO: dynamical set enum encoding
       formatRegistry.getEnumWriter(e.containingEnum) match {
         case Some(writer) => writer(this, e)
         case None => JString(e.name)
-      }
+      }*/
     case PInt(v) if fd.protoType.isTypeUint32 => JInt(unsignedInt(v))
     case PInt(v) if fd.protoType.isTypeFixed32 => JInt(unsignedInt(v))
     case PInt(v) => JInt(v)
